@@ -1,4 +1,5 @@
 import { Post } from "@/components/posts";
+import { blogPosts } from "@/constants/blogPosts";
 
 export default function Home() {
     return (
@@ -9,12 +10,17 @@ export default function Home() {
             </div>
             <div className="flex flex-col items-start text-start gap-4 mt-8">
                 <h2 className="text-2xl font-bold">たぶん最近の投稿（更新どうせされません）</h2>
-                <Post
-                    title="Next.js 15のParallel Routesを使ってみた"
-                    subtitle="いいけど、まぁうん。"
-                    date="2025/04/13"
-                    link="/posts/nextjs-15-parallel-routes"
-                />
+                {
+                    blogPosts.map(( post, index , arr ) => arr.length - 2 <= index ? (
+                        <Post key={index} title={post.title} subtitle={post.description ?? ""} date={post.date} link={post.link} />
+                    ): <></>)
+                }
+                <h2 className="text-2xl font-bold mt-8">すべての記事</h2>
+                {
+                    blogPosts.map(( post, index ) => (
+                        <Post key={index} title={post.title} subtitle={post.description ?? ""} date={post.date} link={post.link} />
+                    ))
+                }
             </div>
         </div>
     );

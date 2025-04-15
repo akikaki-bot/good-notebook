@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { Roboto } from "next/font/google";
+import { ToggleMenu } from "./(components)/toggleMenu";
+import { SidebarCategory, SidebarLink } from "./(components)/sidebarChildren";
+import { ToggleableAccordionMenu } from "./(components)/toggleableAccordionMenu";
+import { blogPosts } from "@/constants/blogPosts";
 
 const roboto = Roboto({
     subsets: ["latin"],
@@ -12,19 +16,25 @@ export default function PostsLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className={`flex flex-col items-start text-start gap-4 p-6 sm:px-24 sm:py-12 ${roboto.className}`}>
-            <div className="flex fixed bottom-4 left-0 w-full h-20 p-3 sm:px-32 justify-center">
-                <div className="flex flex-col gap-8 h-full bg-white/60 border border-gray-300 rounded-xl shadow-xl px-6 py-4 justify-center backdrop-blur-sm sm:min-w-[500px]  max-w-[600px]">
-                    <div className="flex flex-row items-center justify-between gap-0">
-                        <h1 className="text-2xl font-bold">さいこうのメモ帳</h1>
-                        <Link href="/" className="flex flex-col items-start text-start gap-4 px-4 py-2 border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 hover:bg-gray-100">
-                            <h1 className="text-xl font-bold">もどる</h1>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-            <div className="prose sm:prose-xl mb-20 sm:mb-10 !w-full max-w-none">
-                {children}
+        <div className="min-h-screen flex lg:flex-row flex-col">
+            <ToggleMenu>
+                <SidebarCategory>最近の記事</SidebarCategory>
+                {
+                    blogPosts.map(( post, index , arr ) => arr.length - 2 <= index ? (
+                        <SidebarLink key={index} href={post.link}>{post.title}</SidebarLink>
+                    ): <></>)
+                }
+                <SidebarCategory>すべての記事</SidebarCategory>
+                {
+                    blogPosts.map(( post, index ) => (
+                        <SidebarLink key={index} href={post.link}>{post.title}</SidebarLink>
+                    ))
+                }
+                <SidebarCategory> </SidebarCategory>
+                <SidebarLink href="/">ホームに戻る</SidebarLink>
+            </ToggleMenu>
+            <div style={{ fontFamily:"--font-geist --noto-sans" }} className="prose lg:px-12 p-6 pt-[12vh] w-full lg:h-screen overflow-x-hidden  max-w-none"> 
+                {children} 
             </div>
         </div>
     );
