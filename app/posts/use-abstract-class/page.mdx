@@ -1,0 +1,129 @@
+# 抽象クラスは使え
+
+なんだこのタイトルは？とお思いの方もいますが、私自身もなんでこのタイトルにしたのかわかりません。
+
+## この記事の読者想定：
+- TypeScriptを使っている人
+- TypeScriptを使っている人
+- TypeScriptを使っている人
+- TypeScriptを使っている人
+
+## 抽象クラスは使え
+
+はい。使ってください。
+```typescript
+export abstract class AbstractClass {
+    abstract method(): void;
+}
+```
+
+たった`abstract`と書くだけで、抽象クラスを定義できます。
+簡単でしょ？じゃあこれをどこで使うか。
+
+## クラスの形を一定にしたいときに使う
+
+クラスの形を一定にしたいときに使います。
+・・・なに？一定にする時がない？
+
+ご冗談を。クラスを一定にしたいときはたくさんあります。たとえば：
+
+- プラグインを作成するとき
+
+何？これはクラスの継承で十分だろ？だって？
+・・・`super`を使いたくないんですよ（？？？）
+
+```ts
+export abstract class PluginBase {
+    abstract name: string;
+    abstract version: string;
+    abstract description: string;
+    abstract author: string;
+    abstract license: string;
+    abstract run(): Promise<void> | void;
+    abstract onEvent( ...eventArgs: any[] ): Promise<void> | void;
+}
+```
+
+こういう抽象クラスを作っておいて
+こう使うんです:
+
+```ts
+import { PluginBase } from './PluginBase';
+
+export class MyPlugin implements PluginBase {
+    name = 'MyPlugin';
+    version = '1.0.0';
+    description = 'My plugin description';
+    author = 'My name';
+    license = 'MIT';
+
+    run() {
+        console.log('My plugin is running!');
+    }
+}
+```
+
+（さらっとかきましたが、抽象クラスを実態のあるクラスにする際は`implements`をつかいます）
+
+で、これは`PluginBase`を実装していますよね？なのでこのクラスには絶対この関数がある！！！っていう保証があるんです！！！
+素晴らしいことなんです。これは素晴らしいことなんです！！！！！！！
+
+- APIのRouteをクラス管理にしたいとき
+
+```ts
+
+export abstract class RouteBase {
+    abstract method: string;
+    abstract path: string;
+    abstract handler( ...args: any[] ): Promise<void> | void;
+}
+```
+
+これはこう：
+
+```ts
+import { RouteBase } from './RouteBase';
+
+export default class MyRoute implements RouteBase {
+    method = 'GET';
+    path = '/api/my-route';
+
+    handler( req: Request, res: Response ) {
+        res.send('Hello World!');
+    }
+}
+```
+
+## ちなみに
+
+抽象クラスを変数の型として使うと、`new`ができないので不便です
+しかし・・・
+```ts
+export type RouteBaseConstructor = new () => RouteBase;
+```
+こういう型を作ってあげることで、動的importの際に`RouteBaseConstructor`を型として設定してあげることで`new`できるようになります。
+
+こんなかんじにね：
+```ts
+import { readdirSync } from 'fs';
+import { RouteBaseConstructor } from './RouteBase';
+
+const directries = readdirSync('./routes');
+for (const dir of directries) {
+    const route = await import(`./routes/${dir}`).default as RouteBaseConstructor;
+    if( !route) continue;
+    const instance = new route();
+    //....以下登録処理.....
+}
+```
+
+ここの`instance`は`RouteBase`型なので、`handler`が必ず存在することが保証されます。
+必ずある、というのがポイントです。
+
+そして、**抽象クラスはクラス設計を一定の形にすることができます。**きれいなコードを書く時にもおすすめ。
+
+## まとめ
+
+・・・なに？いまいち抽象クラスの良さが伝わらなかった？
+なら使うんだ。使ってみるんだ。使うことで良さがわかるんだ。
+
