@@ -33,7 +33,7 @@ export default function PostsLayout({
                 <SidebarCategory> </SidebarCategory>
                 <SidebarLink href="/">ホームに戻る</SidebarLink>
             </ToggleMenu>
-            <div style={{ fontFamily:"--font-geist --noto-sans" }} className="prose lg:px-12 p-6 pt-[12vh] w-full lg:h-screen overflow-x-hidden  max-w-none"> 
+            <div style={{ fontFamily:"--font-geist --noto-sans" }} className="prose lg:px-12 p-6 pt-[12vh] w-full lg:h-screen overflow-x-hidden  max-w-none scroll-smooth"> 
                 {children} 
             </div>
         </div>
