@@ -4,6 +4,7 @@ import { ToggleMenu } from "./(components)/toggleMenu";
 import { SidebarCategory, SidebarLink } from "./(components)/sidebarChildren";
 import { ToggleableAccordionMenu } from "./(components)/toggleableAccordionMenu";
 import { blogPosts } from "@/constants/blogPosts";
+import { Fragment } from "react";
 
 const roboto = Roboto({
     subsets: ["latin"],
@@ -22,7 +23,7 @@ export default function PostsLayout({
                 {
                     blogPosts.map(( post, index , arr ) => arr.length - 2 <= index ? (
                         <SidebarLink key={index} href={post.link}>{post.title}</SidebarLink>
-                    ): <></>)
+                    ): <Fragment key={index} />)
                 }
                 <SidebarCategory>すべての記事</SidebarCategory>
                 {

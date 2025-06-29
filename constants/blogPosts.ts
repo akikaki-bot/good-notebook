@@ -18,5 +18,11 @@ export const blogPosts : Posts[] = [
         description: "Next.js@15 Parallel Routesを使ってみただけのメモ",
         link: "/posts/nextjs-15-parallel-routes",
         date: "2025-04-13"
+    },
+    {
+        title : "Next.jsをこれまで書いてて思ったこと",
+        description: "Next.jsをこれまで書いてて思ったことをまとめたメモ",
+        link: "/posts/thought-of-nextjs",
+        date: "2025-06-29"
     }
 ]
