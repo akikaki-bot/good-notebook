@@ -1,0 +1,86 @@
+
+# TypeScriptで遊ぼう
+
+暇だったので遊んでみました。前から気になってた足し算とそれの派生の掛け算を作ってみます。
+
+## 1. 足し算
+足し算はだいたい頭に浮かんでいます。TypeScriptの型は再帰処理でいろいろ面白いことができるのでそれで実装してみようかな？
+まず指定した長さの配列を作成する型関数を作ってみましょう。
+
+```ts
+type Generate<T extends number, Cr extends any[] = []> = 
+    Cr["length"] extends T ? Cr 
+    : Generate<T, [...Cr, never]>;
+```
+
+こんな感じかな？ Tに指定した数を入れれば、Tの分だけ作られるやつです。
+詳しいことは省きますが、Crの長さがTを満たしていなければ Crにneverを一つ追加して同じことを繰り返すだけです。
+簡単そう！
+
+ついでに配列型を混ぜるやつ作るやつも作っておきます。
+```ts
+type MergeArray<T extends any[], U extends any[]> = [...T, ...U];
+```
+これは説明不要ですね！ fine
+
+これでやっと主役はそろいました。早速足し算をしていきましょう！
+```ts
+type AddProto<T extends number, U extends number> = 
+    MergeArray<
+        Generate<T>, 
+        Generate<U>
+    >["length"];
+```
+
+できましたね！`AddProto<1, 2>`とすることで型が3になると思います。（たぶん）
+
+## 2. 掛け算もつくる
+
+足し算ができたなら掛け算もできるだろ！ってことで掛け算も作っていきます。
+掛け算は、、、二次元配列を工夫して作ろうかな？
+
+とりあえず引数が0だったらneverを返す便利関数を作っておいて・・・
+```ts
+type IsZero<T extends number> = T extends 0 ? never : T
+```
+ついでに上の足し算を数字だけ返しますよ！っていう明示的なものにするやつを作って・・・（語彙力）
+```ts
+type Add<T extends number, U extends number> = AddProto<T, U> extends number 
+    ? AddProto<T, U> 
+    : never;
+```
+
+二次元配列を一次元配列にするやつも作って・・・
+```ts
+
+type SecArrayToFirstArray<
+    T extends any[][], 
+    N extends number = 0, 
+    Result extends any[] = []>
+ = N extends T["length"] 
+    ? Result 
+    : SecArrayToFirstArray<T, Add<N, 1>, [...Result, ...T[N]]>; 
+```
+
+これで掛け算実装ですね！
+```ts
+type KakezanProto<
+    T extends number, 
+    U extends number, 
+    C extends any[][] = []
+> = IsZero<T | U> extends never ? [] 
+    : C["length"] extends U ? SecArrayToFirstArray<C>
+    : KakezanProto<T, U, [...C, Generate<T>]>;
+type Kakezan<T extends number, U extends number> = KakezanProto<T, U> extends never[] 
+    ? KakezanProto<T, U>["length"] 
+    : 0
+```
+
+簡単な説明をすると、Cの二次元配列の長さがUを満たしていなければ、Cの二次元配列にあたらしくTの長さの配列をマージした配列を作成して・・・
+それを繰り返し、二次元配列を一次元配列にし、その長さを取るというような感じ。
+
+その性質上、答えが9999を超えると計算できなくなります。かなしい。
+
+## おわりに
+わりとTypeScriptの型関数できましたね！引き算とかも次回は挑戦してみようと思います！
+

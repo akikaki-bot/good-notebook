@@ -24,5 +24,11 @@ export const blogPosts : Posts[] = [
         description: "Next.jsをこれまで書いてて思ったことをまとめたメモ",
         link: "/posts/thought-of-nextjs",
         date: "2025-06-29"
+    },
+    {
+        title: "TypeScriptで遊ぼう",
+        description: "TypeScriptで遊んでるだけ",
+        link: "/posts/lets-play-typescript",
+        date: "2025-07-06"
     }
 ]
