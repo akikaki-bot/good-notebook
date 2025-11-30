@@ -13,7 +13,7 @@ export function SidebarCategory({ children }: { children: React.ReactNode }) {
 
 export function SidebarLink({ href, children, onClick, onBlur }: { href: string, children: React.ReactNode, onClick ?: MouseEventHandler, onBlur?: FocusEventHandler  }) {
     return (
-        <li style={{ fontFamily:"--font-geist" }} className="pl-4 text-[18px]" onClick={onClick} onBlur={onBlur}>
+        <li style={{ fontFamily:"--font-geist" }} className="pl-4 text-[18px] hover:bg-gray-100 rounded-sm" onClick={onClick} onBlur={onBlur}>
             <Link href={href}>{ children }</Link>
         </li>
     )

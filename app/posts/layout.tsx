@@ -22,8 +22,11 @@ export default function PostsLayout({
                 <SidebarCategory>最近の記事</SidebarCategory>
                 {
                     blogPosts.map(( post, index , arr ) => arr.length - 2 <= index ? (
-                        <SidebarLink key={index} href={post.link}>{post.title}</SidebarLink>
-                    ): <Fragment key={index} />)
+                        <SidebarLink key={index} href={post.link}>
+                            { arr.length == index + 1 ? <span>🔥</span> : ""}
+                            {post.title}
+                        </SidebarLink>
+                    ): <Fragment key={index} />).reverse()
                 }
                 <SidebarCategory>すべての記事</SidebarCategory>
                 {

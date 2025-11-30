@@ -19,7 +19,6 @@ export function CopyableHeading({
         const target = e.currentTarget.getAttribute("id");
         if (target) {
             navigator.clipboard.writeText(`${location.origin}${location.pathname}#${target}`);
-
         }
     };
 
