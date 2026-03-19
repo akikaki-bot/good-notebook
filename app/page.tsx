@@ -5,7 +5,7 @@ import { Fragment } from "react";
 
 export default function Home() {
     return (
-        <div className="flex flex-col  min-h-screen sm:p-24 p-6">
+        <div className="flex flex-col  min-h-screen p-6">
             <div className="flex flex-col items-start text-start gap-0">
                 <h1 className="text-4xl font-bold mb-4">さいこうのメモ帳</h1>
                 <p className="text-gray-500"><Link href="https://akikaki.net/">あきかき</Link>のブログ兼備忘録</p>

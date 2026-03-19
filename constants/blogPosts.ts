@@ -30,5 +30,11 @@ export const blogPosts : Posts[] = [
         description: "TypeScriptで遊んでるだけ",
         link: "/posts/lets-play-typescript",
         date: "2025-07-06"
-    }
+    },
+    {
+        title: "このページのUIを一部DaisyUIにした話",
+        description: "このページのUIを一部DaisyUIにした話のメモ",
+        link: "/posts/change-to-daisy-ui",
+        date: "2026-03-20"
+    },
 ]
